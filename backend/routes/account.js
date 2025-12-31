@@ -1,7 +1,7 @@
 import { Router } from "express";
 import express from "express"
-import authHeader from "../middleware";
-import { Account } from "./../db"
+import authHeader from "./../middleware/index.js";
+import { Account } from "./../db.js"
 import mongoose from "mongoose";
 
 const accountRouter = express.Router();
@@ -92,4 +92,4 @@ accountRouter.post("/transfer", authHeader, async(req,res) => {
     })
 })
 
-module.exports = accountRouter
+export default accountRouter;

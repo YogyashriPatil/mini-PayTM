@@ -1,5 +1,8 @@
 import mongoose, { model } from "mongoose";
 import z, { float32 } from "zod"
+import { configDotenv } from "dotenv";
+configDotenv();
+const url = process.env.MONGODB_URL
 mongoose.connect(process.env.MONGODB_URL)
 const userSchema = mongoose.Schema({
     userName: {
@@ -34,9 +37,9 @@ const accountSchema = mongoose.Schema({
         required: true
     }
 })
-const Account = mongoose.model("Account", bankSchema)
-const User = mongoose.model("User", userSchema)
-module.exports = {
-    User,
-    Account
-}
+export const Account = mongoose.model("Account", accountSchema)
+export const User = mongoose.model("User", userSchema)
+// module.exports = {
+//     User,
+//     Account
+// }

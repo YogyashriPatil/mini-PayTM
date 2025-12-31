@@ -1,6 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
-import mainRouter from "./routes/index"
+import mainRouter from "./routes/index.js"
 import jwt from "jsonwebtoken"
 import cors from "cors"
 dotenv.config();

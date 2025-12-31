@@ -1,11 +1,12 @@
 import express from "express"
-import { User } from "./../db"
+import { Account, User } from "./../db.js"
 import zod from "zod"
 import jwt from "jsonwebtoken"
-import JWT_SECRET from "./../config"
 import bcrypt from "bcrypt"
-import { authHeader } from "./../middleware/index"
+import authHeader from "./../middleware/index.js"
 const userRouter = express.Router();
+
+const JWT_SECRET ="abc"
 
 const signupSchema = zod.object({
     username: zod.string(),
@@ -15,8 +16,8 @@ const signupSchema = zod.object({
 })
 const updateSchema = zod.object({
     password: zod.string().optional(),
-    firstName: zod.string().optional();
-    lastName: zod.string().optional();
+    firstName: zod.string().optional(),
+    lastName: zod.string().optional()
 
 })
 userRouter.put("/", authHeader, async(req,res) => {
@@ -86,16 +87,17 @@ userRouter.post("/signin", authHeader, async (req,res) => {
 })
 userRouter.post("/signup", async(req,res) => {
     const {username, firstname, lastname, password} = req.body;
-    const {sucess} = signupSchema.safeParse(req.body)
-    if(!sucess){
-        return res.json({
-            message:"Email already taken / incorrect inputs"
-        })
-    }
+    // const {sucess} = signupSchema.safeParse(req.body)
+    // if(!sucess){
+    //     return res.json({
+    //         message:"Email already taken / incorrect inputs"           
+    //     })
+
+    // }
     const user = await User.findOne({
         userName: username
     })
-    if(user._id) {
+    if(user) {
         return res.status(403).json({
             message : "User already exist in our db try to sign up "
         })
@@ -109,7 +111,7 @@ userRouter.post("/signup", async(req,res) => {
     const userId = dbUser._id;
     await Account.create({
         userId,
-        balance = 1+Math.random() * 1000
+        balance : 1+Math.random() * 1000
     })
     const token = jwt.sign({
         userId: dbUser._id
@@ -120,4 +122,4 @@ userRouter.post("/signup", async(req,res) => {
     })
 })
 
-module.exports = userRouter;
+export default userRouter;
