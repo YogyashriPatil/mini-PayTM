@@ -55,11 +55,11 @@ userRouter.get("/bulk", async(req,res) => {
         }))
     })
 })
-userRouter.post("/signin", authHeader, async (req,res) => {
+userRouter.post("/signin", async (req,res) => {
     const username= req.body.username;
     const password = req.body.password;
     
-    const user =await UserModel.findOne({
+    const user =await User.findOne({
         userName: username
     })
     if(!user) {
