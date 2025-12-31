@@ -4,7 +4,7 @@ import zod from "zod"
 import jwt from "jsonwebtoken"
 import JWT_SECRET from "./../config"
 import bcrypt from "bcrypt"
-import { authMiddleware } from "./../middleware/index"
+import { authHeader } from "./../middleware/index"
 const userRouter = express.Router();
 
 const signupSchema = zod.object({
@@ -19,7 +19,7 @@ const updateSchema = zod.object({
     lastName: zod.string().optional();
 
 })
-userRouter.put("/", authMiddleware, async(req,res) => {
+userRouter.put("/", authHeader, async(req,res) => {
     const { success } = updateSchema.safeParse(req.body)
     if(!success){
         res.status(411).json({
@@ -54,7 +54,7 @@ userRouter.get("/bulk", async(req,res) => {
         }))
     })
 })
-userRouter.post("/signin", authMiddleware, async (req,res) => {
+userRouter.post("/signin", authHeader, async (req,res) => {
     const username= req.body.username;
     const password = req.body.password;
     
